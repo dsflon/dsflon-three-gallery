@@ -1,0 +1,157 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	
+	<title>j_three.panoramaImageViewer.js | Library</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link href="/gallery/common/css/style.css" rel="stylesheet">
+
+	<style>
+
+		body {
+			background: #FFF;
+			background: linear-gradient(to bottom, #DDDDDD 1%, #ffffff 50%, #ffffff 100%);
+		}
+
+		#loading {
+			position: fixed;
+			top: 50%; left: 50%;
+			-webkit-transform: translate(-50%, -50%);
+			-ms-transform: translate(-50%, -50%);
+			transform: translate(-50%, -50%);
+			font-size: 32px;
+		}
+	</style>
+
+</head>
+<body>
+
+<div id="area"></div>
+<div id="loading"></div>
+
+<script src="gallery2.js"></script>
+
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script src="/gallery/common/js/three.min.js"></script>
+<script src="/gallery/common/js/OrbitControls.js"></script>
+<script src="/gallery/common/js/tween.min.js"></script>
+<!-- <script src="/gallery/common/js/TrackballControls.js"></script> -->
+<script src="j_three.panoramaGallery.js"></script>
+
+<script>
+
+var mainImg, initCameraPos = {};
+var area = document.getElementById("area");
+var loading = document.getElementById("loading");
+
+ImageInit();
+Init();
+
+function ImageInit() {
+
+    mainImg = new jThreePanoramaImageClick(area,src.data);
+
+	mainImg.minDistance = 1;
+	mainImg.defaultDistance = 15;
+	mainImg.maxDistance = 30;
+    mainImg.enablePan = true;
+
+    mainImg.autoRotate = true;
+    mainImg.autoRotateSpeed = 0.2;
+	mainImg.zoomSpeed = 0.2;
+
+	mainImg.imageLoading = function(count, length) {
+
+		loading.innerHTML = count + " / " + length;
+
+	};
+
+}
+
+function Init(){
+
+	mainImg.loadEnd = loadEnd;
+	mainImg.clickEnd = clickEnd;
+
+}
+
+function loadEnd() {
+
+	mainImg.play();
+
+	loading.style.display = "none";
+
+}
+
+var clickFlag = false;
+var prevData = null;
+
+function clickEnd(object,data) {
+
+	if( !clickFlag ) {
+
+		initCameraPos["x"] = mainImg.camera.position.x;
+		initCameraPos["y"] = mainImg.camera.position.y;
+		initCameraPos["z"] = mainImg.camera.position.z;
+
+	}
+
+	if( clickFlag && ( data.id == prevData ) ) {
+
+		ZoomOut(object);
+
+	} else {
+
+		ZoomIn(object);
+
+	}
+
+	prevData = data.id;
+
+}
+
+
+function ZoomIn(object) {
+
+	mainImg.stop();
+
+	var x = object.position.x * 1.12;
+	var y = object.position.y * 1.12;
+	var z = object.position.z * 1.12;
+	//
+	// console.log(object.position.x , x)
+	//
+	// x = Math.abs( object.position.x - x );
+	//
+
+	//
+	mainImg.transform( mainImg.camera.position, {
+		"x": x,
+		"y": y,
+		"z": z
+	},1000 );
+
+	clickFlag = true;
+
+}
+function ZoomOut(object) {
+
+	mainImg.start();
+
+	mainImg.transform( mainImg.camera.position, {
+		"x": initCameraPos.x,
+		"y": initCameraPos.y,
+		"z": initCameraPos.z
+	},1000 );
+
+	clickFlag = false;
+
+}
+
+
+</script>
+
+</body>
+</html>

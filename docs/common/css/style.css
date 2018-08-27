@@ -1,0 +1,120 @@
+@charset "UTF-8";
+@import url(https://fonts.googleapis.com/css?family=Josefin+Slab:400,700);
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video { margin: 0; padding: 0; border: 0; font: inherit; font-size: 100%; vertical-align: baseline; }
+
+html { line-height: 1; }
+
+ol, ul { list-style: none; }
+
+table { border-collapse: collapse; border-spacing: 0; }
+
+caption, th, td { text-align: left; font-weight: normal; vertical-align: middle; }
+
+q, blockquote { quotes: none; }
+q:before, q:after, blockquote:before, blockquote:after { content: ""; content: none; }
+
+a img { border: none; }
+
+article, aside, details, figcaption, figure, footer, header, hgroup, main, menu, nav, section, summary { display: block; }
+
+html, body { height: 100%; }
+
+body { background: radial-gradient(ellipse at center, #ffffff 0%, #ffffff 50%, #cccccc 100%); margin: 0; font-family: 'Josefin Slab', 'ヒラギノ角ゴ Pro W3','Hiragino Kaku Gothic Pro','メイリオ',Meiryo,'ＭＳ Ｐゴシック',sans-serif; overflow: hidden; cursor: move; letter-spacing: 0.02em; font-size: 14px; }
+
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+.preload { position: fixed; opacity: 0; z-index: -1; }
+
+a { color: #888; text-decoration: none; cursor: pointer; }
+a:hover { text-decoration: underline; }
+
+.sp #container.transition { transition: all 0.4s linear 0s; }
+.sp #container.opacity { opacity: 0; }
+
+#info { position: fixed; left: 30px; bottom: 30px; line-height: 1; z-index: 999; transition: all 0.4s cubic-bezier(0.77, 0, 0.175, 1) 0s; pointer-events: none; }
+#info.hide { opacity: 0; pointer-events: none; }
+#info h1 { font-size: 56px; margin-bottom: 6px; color: #333; }
+#info .ttl { font-size: 20px; color: #777; font-weight: bold; }
+
+.sp #info { left: 20px; bottom: 20px; }
+.sp #info h1 { font-size: 32px; }
+.sp #info .ttl { font-size: 14px; }
+
+#sort { position: fixed; left: 30px; top: 30px; width: 100%; z-index: 999; transition: all 0.4s cubic-bezier(0.77, 0, 0.175, 1) 0s; }
+#sort.hide { opacity: 0; pointer-events: none; }
+#sort ul li { display: inline-block; padding-right: 15px; }
+#sort ul li a { font-size: 16px; color: #333; }
+#sort ul li a.active { text-decoration: underline; color: #111; font-weight: bold; }
+
+.sp #sort { left: 0; top: 0; text-align: center; }
+.sp #sort ul li { padding: 0; }
+.sp #sort ul li a { font-size: 14px; display: inline-block; padding: 20px 5px; }
+
+#load #top, #load #bottom { display: block; content: ""; background-color: #000; position: fixed; left: 0; width: 100%; height: 50%; z-index: 999; transition: all 0.05s linear 0s; opacity: 0.1; }
+#load #top { top: 0; margin-top: -1px; }
+#load #bottom { bottom: 0; margin-bottom: -1px; }
+#load #length { position: absolute; top: 50%; left: 50%; -webkit-transform: translate(-50%, -50%); -ms-transform: translate(-50%, -50%); transform: translate(-50%, -50%); color: #333; font-size: 26px; z-index: 1001; line-height: 1; }
+#load.hide { transition: all 0.4s cubic-bezier(0.77, 0, 0.175, 1) 0s; opacity: 0; pointer-events: none; }
+
+.element { text-align: center; cursor: default; margin: 0; padding: 0; overflow: hidden; }
+.element img { max-width: 100%; display: block; height: auto; -webkit-filter: grayscale(0%) saturate(20%) sepia(0%) contrast(125%); filter: grayscale(0%) saturate(20%) sepia(0%) contrast(125%); }
+.element img.opacity { opacity: 0; }
+
+.pc .element { width: 160px; }
+.pc .element img { transition: all 0.4s cubic-bezier(0.77, 0, 0.175, 1) 0s; box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1); }
+.pc .element img.opacity { transition: all 0s ease 0s; }
+.pc .element:hover img, .pc .element.active img { cursor: pointer; -webkit-filter: inherit; filter: inherit; -webkit-transform: scale(1.1); -ms-transform: scale(1.1); transform: scale(1.1); }
+
+.sp .element { width: 60px; }
+.sp .element.transition { transition: all 0.4s cubic-bezier(0.77, 0, 0.175, 1) 0s; }
+.sp .element.hide { pointer-events: none; opacity: 0; }
+
+#copyImg #copyImgInner .element { transition: all 1s cubic-bezier(0.77, 0, 0.175, 1) 0.75s; }
+#copyImg.active #copyImgInner .element { opacity: 0; }
+
+#detail { position: fixed; width: 100%; left: 0; bottom: 0; padding: 20px 50px; line-height: 110%; color: #FFF; background: rgba(0, 0, 0, 0.6); z-index: 9999; opacity: 0; transition: all 0.4s cubic-bezier(0.77, 0, 0.175, 1) 0s; pointer-events: none; }
+#detail.active { cursor: default; opacity: 1; pointer-events: inherit; }
+#detail.hide { opacity: 0; pointer-events: none; }
+
+.sp #detail { padding: 20px; }
+
+#bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; opacity: 0; transition: all 1s cubic-bezier(0.77, 0, 0.175, 1) 0s; pointer-events: none; background-repeat: no-repeat; background-position: center; background-color: #000; background-size: contain; }
+#bg:before, #bg:after { transition: all 0.7s cubic-bezier(0.77, 0, 0.175, 1) 0s; content: ""; display: block; position: absolute; width: 100%; height: 50%; left: 0; box-sizing: border-box; pointer-events: none; background: #111; }
+#bg:before { top: 0; }
+#bg:after { bottom: 0; }
+#bg.active { opacity: 1; cursor: default; pointer-events: inherit; }
+#bg.show { transition: all 0s; }
+#bg.show:before { -webkit-transform: translate(100%, 0); -ms-transform: translate(100%, 0); transform: translate(100%, 0); }
+#bg.show:after { -webkit-transform: translate(-100%, 0); -ms-transform: translate(-100%, 0); transform: translate(-100%, 0); }
+
+.sp #bg:before, .sp #bg:after { transition: all 0.3s cubic-bezier(0.77, 0, 0.175, 1) 0s; }
+
+#prev, #next { position: fixed; top: 50%; z-index: 9999; width: 70px; height: 70px; opacity: 0; cursor: pointer; pointer-events: none; -webkit-transform: translate(0, -50%); -ms-transform: translate(0, -50%); transform: translate(0, -50%); transition: all 0.4s cubic-bezier(0.77, 0, 0.175, 1) 0s; }
+#prev.active, #next.active { opacity: 1; pointer-events: inherit; }
+#prev.hide, #next.hide { opacity: 0; pointer-events: none; }
+#prev:before, #next:before { content: ""; display: block; border-top: 2px solid rgba(255, 255, 255, 0.8); transition: all 0.4s cubic-bezier(0.77, 0, 0.175, 1) 0s; width: 40px; height: 40px; position: absolute; top: 50%; left: 50%; }
+
+#prev { left: 15px; }
+#prev:before { border-left: 2px solid rgba(255, 255, 255, 0.8); -webkit-transform: translate(-20%, -50%) rotate(-45deg); -ms-transform: translate(-20%, -50%) rotate(-45deg); transform: translate(-20%, -50%) rotate(-45deg); }
+
+#next { right: 15px; }
+#next:before { border-right: 2px solid rgba(255, 255, 255, 0.8); -webkit-transform: translate(-80%, -50%) rotate(45deg); -ms-transform: translate(-80%, -50%) rotate(45deg); transform: translate(-80%, -50%) rotate(45deg); }
+
+.pc #prev:hover { left: 10px; opacity: 0.6; }
+.pc #next:hover { right: 10px; opacity: 0.6; }
+
+.sp #next, .sp #prev { display: none; }
+
+#close { position: fixed; top: 20px; right: 20px; z-index: 9999; opacity: 0; pointer-events: none; transition: all 0.4s cubic-bezier(0.77, 0, 0.175, 1) 0s; cursor: pointer; }
+#close.active { opacity: 1; pointer-events: inherit; }
+#close:before, #close:after { content: ""; display: block; position: absolute; top: 50%; left: 50%; height: 2px; background: rgba(255, 255, 255, 0.8); }
+#close:before { -webkit-transform: translate(-50%, -50%) rotate(45deg); -ms-transform: translate(-50%, -50%) rotate(45deg); transform: translate(-50%, -50%) rotate(45deg); }
+#close:after { -webkit-transform: translate(-50%, -50%) rotate(-45deg); -ms-transform: translate(-50%, -50%) rotate(-45deg); transform: translate(-50%, -50%) rotate(-45deg); }
+#close.hide { opacity: 0; pointer-events: none; }
+
+.pc #close { width: 50px; height: 50px; }
+.pc #close:before, .pc #close:after { width: 60px; }
+.pc #close:hover { opacity: 0.5 !important; -webkit-transform: rotate(90deg); -ms-transform: rotate(90deg); transform: rotate(90deg); }
+
+.sp #close { top: 10px; right: 10px; width: 40px; height: 40px; }
+.sp #close:before, .sp #close:after { width: 45px; }

@@ -1,0 +1,184 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	
+	<title>j_three.panoramaImageViewer.js | Library</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link href="/gallery/common/css/style.css" rel="stylesheet">
+
+	<style>
+
+		body {
+			background: #FFF;
+			background: linear-gradient(to bottom, #000 1%, #111 80%, #111 100%);
+		}
+
+		#loading {
+			position: fixed;
+			top: 50%; left: 50%;
+			-webkit-transform: translate(-50%, -50%);
+			-ms-transform: translate(-50%, -50%);
+			transform: translate(-50%, -50%);
+			font-size: 32px;
+			color: #CCC;
+		}
+	</style>
+
+</head>
+<body>
+
+<div id="area"></div>
+<div id="loading"></div>
+
+<script src="gallery2.js"></script>
+
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script src="/gallery/common/js/three.min.js"></script>
+<!-- <script src="/gallery/common/js/OrbitControls.js"></script> -->
+<script src="/gallery/common/js/FlyControls.js"></script>
+<script src="/gallery/common/js/tween.min.js"></script>
+<!-- <script src="/gallery/common/js/TrackballControls.js"></script> -->
+<script src="j_three.panoramaGallery_2.js"></script>
+
+<script>
+
+var mainImg, initCameraPos = {};
+var area = document.getElementById("area");
+var loading = document.getElementById("loading");
+
+ImageInit();
+Init();
+
+function ImageInit() {
+
+    mainImg = new jThreePanoramaImageClick(area,src.data);
+
+	mainImg.defaultDistance = 15;
+
+	mainImg.imageLoading = function(count, length) {
+
+		loading.innerHTML = count + " / " + length;
+
+	};
+
+}
+
+function Init(){
+
+	mainImg.loadEnd = loadEnd;
+	mainImg.clickEnd = clickEnd;
+
+}
+
+function loadEnd() {
+
+	mainImg.play();
+
+	loading.style.display = "none";
+
+
+
+	var mouseOut = false;
+
+	area.addEventListener( 'mouseout', function(){
+
+		mainImg.transform( mainImg.camera.rotation, { "x": 0, "y": 0, "z": 0 }, 500 );
+
+		mainImg.controls.dragToLook = true;
+		mainImg.controls.rollSpeed = 0;
+
+		mouseOut = true;
+
+	}, false );
+
+	area.addEventListener( 'mouseover', function(){
+		if( mouseOut ) {
+
+			mainImg.controls.dragToLook = false;
+			mainImg.controls.rollSpeed = 500;
+			mouseOut = false;
+
+		}
+	}, false );
+
+}
+
+var clickFlag = false;
+var prevData = null;
+
+function clickEnd(object,data) {
+
+	var clock = new THREE.Clock();
+	var delta = clock.getDelta();
+
+	if( !clickFlag ) {
+
+		initCameraPos["x"] = mainImg.camera.position.x;
+		initCameraPos["y"] = mainImg.camera.position.y;
+		initCameraPos["z"] = mainImg.camera.position.z;
+
+	}
+
+	if( clickFlag && ( data.id == prevData ) ) {
+
+		ZoomOut(object,delta);
+
+	} else {
+
+		ZoomIn(object,delta);
+
+	}
+
+	prevData = data.id;
+	// mainImg.controls.update();
+
+}
+
+
+function ZoomIn(object, delta) {
+
+	mainImg.stop();
+
+	mainImg.transform( mainImg.camera.position, {
+		"x": object.position.x,
+		"y": object.position.y,
+		"z": object.position.z + 1.2
+	},1500 );
+
+	mainImg.transform( mainImg.camera.rotation, {
+		"x": 0,
+		"y": 0,
+		"z": 0
+	},1500 );
+
+	clickFlag = true;
+
+	mainImg.controls.dragToLook = true;
+	mainImg.controls.rollSpeed = 0;
+	// mainImg.controls.update(delta);
+
+}
+function ZoomOut(object, delta) {
+
+	mainImg.start();
+
+	mainImg.transform( mainImg.camera.position, {
+		"x": initCameraPos.x,
+		"y": initCameraPos.y,
+		"z": initCameraPos.z
+	},1500 );
+
+	clickFlag = false;
+	mainImg.controls.dragToLook = false;
+	mainImg.controls.rollSpeed = 500;
+	// mainImg.controls.update(delta);
+
+}
+
+
+</script>
+
+</body>
+</html>

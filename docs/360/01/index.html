@@ -1,0 +1,158 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>THETAを付けて青梅街道を走ってみる</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+    <!-- OGP -->
+    <meta property="og:locale" content="ja_JP">
+    <meta property="og:title" content="THETAを付けて青梅街道を走ってみる">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://dsflon.com/gallery/360/01/?src=03.mp4&index=2">
+    <meta property="og:image" content="https://dsflon.com/gallery/360/01/ogp.jpg">
+    <meta property="og:description" content="THETAを付けて青梅街道を走ってみる">
+    <meta property="fb:app_id" content="966242223397117">
+
+	<link href="../common/css/common.css" rel="stylesheet">
+	<link href="../common/css/threedemo.css" rel="stylesheet">
+		
+</head>
+<body>
+
+<div id="video"></div>
+<div id="loading">Loading ...</div>
+<div id="play" class="disabled">▶</div>
+<div id="stop" class="disabled">■</div>
+<div id="volume" class="disabled">♪</div>
+<div id="reload" class="disabled" onclick="location.reload()"></div>
+<a id="next">><span>次へ</span></a>
+<a id="prev"><<span>前へ</span></a>
+
+<script src="../common/js/libs/three.min.js"></script>
+<script src="../common/js/libs/OrbitControls.js"></script>
+<script src="../common/js/libs/DeviceOrientationControls.js"></script>
+<script src="../common/js/j_three.panoramaVideoViewer.js"></script>
+
+<script>
+
+var array = [
+	"01.mp4",
+	"02.mp4",
+	"03.mp4",
+	"04.mp4"
+]
+
+var first = true;
+var videoSrc = array[0];
+var videoIndex = 0;
+if( location.search ) {
+	videoSrc = location.search.split("src=")[1].split("&")[0];
+	videoIndex = Number( location.search.split("index=")[1].split("&")[0] );
+}
+
+window.addEventListener("load", function(){
+	VideoInit();
+	Init();
+});
+
+function VideoInit() {
+
+    videoID = document.getElementById("video");
+    mainVideo = new jThreePanoramaVideoViewer(videoID, videoSrc, 0.1, true);
+	// mainVideo.autoRotate = true;
+	// mainVideo.autoRotateSpeed = 1;
+	mainVideo.minDistance = 0.01;
+	// mainVideo.maxDistance = 6;
+	// mainVideo.zoomSpeed = 10;
+	// mainVideo.rotateSpeed = 1;
+	// mainVideo.deviceOrientationControls = true;
+
+}
+function Init(){
+
+	loading = document.getElementById("loading");
+	button = document.getElementById("play");
+	stop = document.getElementById("stop");
+	volume = document.getElementById("volume");
+	reload = document.getElementById("reload");
+
+	//
+
+	var arrayLength = array.length;
+	var next = document.getElementById("next");
+	var prev = document.getElementById("prev");
+
+	var nextPath = '?src='+ array[videoIndex + 1] +'&index=' + (videoIndex + 1);
+	var prevPath = '?src='+ array[videoIndex - 1] +'&index=' + (videoIndex - 1);
+
+	if( videoIndex == array.length - 1 ) {
+		nextPath = '?src='+ array[0] +'&index=0';
+	} else if( videoIndex == 0 ) {
+		prevPath = '?src='+ array[array.length - 1] +'&index=' + (array.length - 1);
+	}
+	next.setAttribute("href",nextPath);
+	prev.setAttribute("href",prevPath);
+
+
+	//
+
+	mainVideo.video.addEventListener("canplay",loadEnd);
+	button.addEventListener("click", MoviePlay, false);
+	volume.addEventListener("click", Volume, false);
+	stop.addEventListener("click", Stop, false);
+
+}
+
+function loadEnd() {
+	button.className = "";
+	loading.className = "loadEnd";
+	mainVideo.video.removeEventListener("canplay",loadEnd);
+}
+
+function MoviePlay() {
+
+	button.className = "play";
+	stop.className = "play";
+	reload.className = "play";
+
+	if(first){
+		if(!/(iPhone|iPod|iPad)/.test(navigator.userAgent)) volume.className = "play";
+		mainVideo.play();
+		first = false;
+	} else {
+		mainVideo.pauseToggle();
+	}
+
+	if(mainVideo.playing){
+		button.textContent = "||";
+	} else {
+		button.textContent = "▶";
+		stop.className = "play";
+	}
+
+}
+function Stop() {
+
+	mainVideo.stop();
+	stop.className = "play stop";
+	button.textContent = "▶";
+
+}
+function Volume() {
+
+	mainVideo.volFadeToggle();
+
+	if(mainVideo.muting){
+		volume.className = "play";
+	} else {
+		volume.className = "play mute";
+	}
+
+}
+
+</script>
+
+</body>
+</html>
